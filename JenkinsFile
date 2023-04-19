@@ -1,0 +1,21 @@
+pipeline {
+	agent any
+	stages {
+	    stage ('Install dependencies') {
+	        steps {
+	            nodejs('18.10.0') {
+    			    sh 'npm install'
+				}
+			}
+		}
+		stage ('Initiate tests on BrowserStack') {
+	        steps {
+	            nodejs('18.10.0') {
+    			    browserstack(credentialsId: "${credentials}") {
+					    sh "npm run ${configuration}"
+					}
+                }
+	        }
+		}
+	}
+}
